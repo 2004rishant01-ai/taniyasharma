@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surprise</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+  font-family:'Poppins', sans-serif;
+  overflow-x:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* Countdown Box Styles */
+.countdown-box {
+  margin: 40px auto;
+  padding: 25px 30px;
+  max-width: 400px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #ff4d6d, #ff9a9e);
+  color: white;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  text-align: center;
+  animation: glowPulse 2s infinite;
+  position: relative;
+  z-index: 10;
+}
+
+.countdown-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  animation: bounce 2s infinite;
+}
+
+.countdown-time {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.countdown-date {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* Countdown Glow Animation */
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 10px rgba(255,78,80,0.5); transform: scale(1);}
+  50% { box-shadow: 0 0 30px rgba(249,212,35,0.9); transform: scale(1.05);}
+  100% { box-shadow: 0 0 10px rgba(255,78,80,0.5); transform: scale(1);}
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0);}
+  50% { transform: translateY(-8px);}
+}
+
+/* Wrapper for Surprise Card */
+.wrapper{
+  display:flex;
+  align-items:center;
+  gap:30px;
+  margin-bottom: 60px;
+}
+
+.side-img{
+  width:160px;
+  height:220px;
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  animation: floatSide 3s ease-in-out infinite alternate;
+}
+
+.card{
+  text-align:center;
+  background:white;
+  padding:35px 45px;
+  border-radius:25px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  position:relative;
+}
+
+.card h1{
+  font-size:2rem;
+  margin-bottom:25px;
+  animation: fadeInText 2s ease-in-out forwards;
+}
+
+button{
+  padding:14px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  background:hotpink;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.1);
+  box-shadow: 0 0 15px rgba(255,105,180,0.6);
+}
+
+/* Side image float animation */
+@keyframes floatSide {
+  0% { transform: translateY(0);}
+  50% { transform: translateY(-15px);}
+  100% { transform: translateY(0);}
+}
+
+/* Text fade in */
+@keyframes fadeInText{
+  0% { opacity:0; transform: translateY(-20px);}
+  100% { opacity:1; transform: translateY(0);}
+}
+
+/* Floating hearts animation */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  font-size: 14px;
+  color: hotpink;
+  animation: floatUp 5s linear forwards;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity:1;}
+  50% { transform: translateY(-50vh) scale(1.2); opacity:0.8;}
+  100% { transform: translateY(-110vh) scale(1); opacity:0;}
+}
+
+/* Mobile responsive */
+@media(max-width:768px){
+  .wrapper{
+    flex-direction:column;
+  }
+  .side-img{
+    width:200px;
+    height:200px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Birthday Countdown -->
+<div class="countdown-box">
+  <div class="countdown-title">🎂 Birthday Countdown 🎉</div>
+  <div class="countdown-time" id="countdown"></div>
+  <div class="countdown-date" id="dateTime"></div>
+</div>
+
+<!-- Surprise Card -->
+<div class="wrapper">
+  <img src="left.png" class="side-img" alt="left image">
+  <div class="card">
+    <h1>🎁 I have a surprise for YOU 💖</h1>
+    <button onclick="openSurprise()">Click ME</button>
+  </div>
+  <img src="right.png" class="side-img" alt="right image">
+</div>
+
+<script>
+// 🎉 SET CUSTOM BIRTHDAY DATE & TIME HERE
+const birthday = new Date("2026-01-22T00:00:00").getTime();
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const diff = birthday - now;
+
+  if(diff <= 0){
+    document.getElementById("countdown").innerHTML = "🎉 It's Birthday Time! 🎉";
+    document.getElementById("dateTime").innerHTML = "";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("countdown").innerHTML =
+    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  };
+
+  document.getElementById("dateTime").innerHTML =
+    "📅 " + new Date(birthday).toLocaleString('en-IN', options);
+}
+
+// Countdown interval
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Surprise button action
+function openSurprise(){
+  window.location.href = "birthday.html";
+}
+
+// Continuous floating hearts
+setInterval(()=>{
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.innerHTML = '❤';
+  h.style.left = Math.random()*100 + 'vw';
+  h.style.fontSize = 12 + Math.random()*18 + 'px';
+  h.style.color = `hsl(${Math.random()*360},80%,70%)`;
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+}, 700);
+</script>
+
+</body>
+</html>

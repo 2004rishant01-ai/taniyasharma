@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffc0cb, #ffffff, #ff4d4d);
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.container {
+  padding: 30px 20px;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+/* Countdown Box */
+.countdown-box{
+  margin: 25px auto;
+  padding: 18px 22px;
+  max-width: 350px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ff4d6d, #ff9a9e);
+  color: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+.countdown-title{
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.countdown-time{
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.countdown-date{
+  margin-top: 6px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* Polaroid Photo Style */
+.gallery {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px;
+  justify-content: center;
+}
+
+.gallery figure {
+  background: #ffffff;
+  padding: 14px 14px 30px;
+  border-radius: 20px;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.28);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  min-width: 320px;
+}
+
+.gallery img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  cursor: pointer;
+}
+
+.gallery figcaption {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #c70039;
+  font-weight: 600;
+  text-align: center;
+}
+
+.gallery figure:hover {
+  transform: scale(1.07) rotate(-1deg);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.38);
+}
+
+/* Cake Section */
+.cake-box{
+  position: relative;
+  width: 260px;
+  margin: 40px auto 10px;
+}
+
+.cake-img{
+  width: 100%;
+  max-width: 260px;
+  border-radius: 20px;
+  display: block;
+}
+
+.candles{
+  position:absolute;
+  top: 23px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:15px;
+}
+
+.candle{
+  width:10px;
+  height:30px;
+  background:rgb(180, 82, 82);
+  border-radius:5px;
+  position:relative;
+}
+
+.flame{
+  width:14px;
+  height:22px;
+  background:orange;
+  border-radius:50%;
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  animation:flicker 0.15s infinite alternate;
+  box-shadow:0 0 15px orange;
+}
+
+@keyframes flicker{
+  from{ transform:translateX(-50%) scale(1); opacity:1;}
+  to{ transform:translateX(-50%) scale(0.8); opacity:0.7;}
+}
+
+/* Button */
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background: hotpink;
+  color: white;
+  cursor: pointer;
+}
+
+/* Popup */
+.popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 90%;
+}
+
+/* Fullscreen Image Viewer */
+#imageViewer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  cursor: pointer;
+}
+#imageViewer img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+/* Fireworks */
+.firework {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: red;
+  border-radius: 50%;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+
+/* Hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+  to { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* Scrollbar fix */
+.gallery::-webkit-scrollbar {
+  height: 10px;
+}
+.gallery::-webkit-scrollbar-thumb {
+  background: hotpink;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+
+<h1>Happy Birthday <span id="personName">to you VIJOY</span> 🎉</h1>
+<p>On this magical day, the universe pauses to celebrate you 💖</p>
+
+<!-- Countdown Box -->
+<div class="countdown-box">
+  <div class="countdown-title">🎂 Birthday Countdown 🎉</div>
+  <div class="countdown-time" id="countdown"></div>
+  <div class="countdown-date" id="dateTime"></div>
+</div>
+
+<!-- Gallery -->
+<div class="gallery">
+  <figure><img src="photo1.jpeg" alt=""><figcaption>Our first beautiful memory ❤</figcaption></figure>
+  <figure><img src="photo2.jpeg" alt=""><figcaption>Moments that make me smile ✨</figcaption></figure>
+  <figure><img src="photo3.jpeg" alt=""><figcaption>Forever grateful for you 🌸</figcaption></figure>
+</div>
+
+<!-- Cake GIF -->
+<div class="cake-box">
+  <img src="cake.gif" class="cake-img" alt="Cake GIF">
+  <div class="candles">
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+    <div class="candle"><div class="flame"></div></div>
+  </div>
+</div>
+
+<button onclick="cutCake()">Cut the Cake 🎂</button>
+
+</div>
+
+<!-- Surprise Popup -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <h2>🎈 Surprise 🎈</h2>
+    <p>May your life be filled with love and happiness 💕</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+</div>
+
+<!-- Image Viewer -->
+<div class="popup" id="imageViewer" onclick="closeImage()">
+  <img id="fullImage" alt="">
+</div>
+
+<script>
+  
+// 🎉 SET CUSTOM BIRTHDAY DATE & TIME HERE
+const birthday = new Date("2026-01-22T00:00:00").getTime();
+
+function updateCountdown(){
+  const now = new Date().getTime();
+  const diff = birthday - now;
+
+  if(diff <= 0){
+    document.getElementById("countdown").innerHTML = "🎉 It's Birthday Time! 🎉";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("countdown").innerHTML =
+    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  };
+
+  document.getElementById("dateTime").innerHTML =
+    "📅 " + new Date(birthday).toLocaleString('en-IN', options);
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Gallery fullscreen
+const fullImage = document.getElementById('fullImage');
+const imageViewer = document.getElementById('imageViewer');
+
+document.querySelectorAll('.gallery img').forEach(img => {
+  img.addEventListener('click', () => {
+    fullImage.src = img.src;
+    imageViewer.style.display = 'flex';
+  });
+});
+           
+function closeImage() {
+  imageViewer.style.display = 'none';
+}
+
+// Cake cut
+function cutCake(){
+  bgMusic.play().catch(()=>{});
+  document.querySelectorAll('.flame').forEach(f => f.style.display='none');
+  popup.style.display='flex';
+  for(let i=0;i<5;i++) setTimeout(createFirework,i*400);
+}
+function closePopup(){ popup.style.display='none'; }
+
+// Fireworks
+function createFirework(){
+  const x=Math.random()*innerWidth;
+  const y=Math.random()*innerHeight/2;
+  for(let i=0;i<30;i++){
+    const s=document.createElement('div');
+    s.className='firework';
+    s.style.left=x+'px';
+    s.style.top=y+'px';
+    s.style.setProperty('--x',Math.random()*200-100+'px');
+    s.style.setProperty('--y',Math.random()*200-100+'px');
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
+  }
+}
+
+// Continuous floating hearts (already present)
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML='❤';
+  h.style.left=Math.random()*100+'vw';
+  h.style.color='hotpink';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},700);
+
+// Special heart shower when "Cut the Cake" clicked
+function specialHeartShower(){
+  for(let i=0;i<50;i++){
+    const h=document.createElement('div');
+    h.className='heart';
+    h.innerHTML='❤';
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.color = `hsl(${Math.random()*360}, 80%, 70%)`;
+    h.style.fontSize = (12 + Math.random()*18) + 'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+  }
+}
+
+// Update cutCake function
+function cutCake(){
+  bgMusic.play().catch(()=>{});
+  
+  // Turn off flames
+  document.querySelectorAll('.flame').forEach(f => f.style.display='none');
+  
+  // Show popup
+  popup.style.display='flex';
+  
+  // Fireworks
+  for(let i=0;i<5;i++) setTimeout(createFirework,i*400);
+  
+  // Trigger special heart shower
+  specialHeartShower();
+}
+
+
+// Hearts
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML='❤';
+  h.style.left=Math.random()*100+'vw';
+  h.style.color='hotpink';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},700);
+</script>
+
+</body>
+</html>
